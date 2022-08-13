@@ -13,6 +13,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// demo route
+app.get('/api/user', (req,res)=> res.json("HELLO FROM SERVER"))
 // Default
 app.get('/', (req, res) => {
     res.json('Hello to my app')

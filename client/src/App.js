@@ -6,7 +6,7 @@ import {useCookies} from 'react-cookie'
 
 const App = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
-
+    fetch("/api/user").then(r => r.json()).then(data => console.log("GOT THIS FROM SERVER CALL", data))
     const authToken = cookies.AuthToken
 
     return (
