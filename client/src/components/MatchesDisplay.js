@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 const MatchesDisplay = ({ matches, setClickedUser }) => {
-  const [matchedProfiles, setMatchedProfiles] = useState(null);
+  const [matchedProfiles, setMatchedProfiles] = useState(matches);
   const [cookies, setCookie, removeCookie] = useCookies(null);
 
   const matchedUserIds = matches.map(({ user_id }) => user_id);
@@ -24,15 +24,15 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
     getMatches();
   }, [matches]);
 
-  const filteredMatchedProfiles = matchedProfiles?.filter(
-    (matchedProfile) =>
-      matchedProfile.matches.filter((profile) => profile.user_id == userId)
-        .length > 0
-  );
-
+  // const filteredMatchedProfiles = matchedProfiles?.filter(
+  //   (matchedProfile) =>
+  //     matchedProfile.matches.filter((profile) => profile.user_id == userId)
+  //       .length > 0
+  // );
+console.log("this is the matches", matches)
   return (
     <div className="matches-display">
-      {filteredMatchedProfiles?.map((match, _index) => (
+      {matchedProfiles?.map((match, _index) => (
         <div
           key={_index}
           className="match-card"

@@ -76,23 +76,27 @@ const Dashboard = () => {
   const filteredGenderedUsers = genderedUsers?.filter(
     (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
   );
-function logAll(){
+  function logAll() {
     console.log(user);
     console.log(genderedUsers);
     console.log(filteredGenderedUsers);
     console.log(matchedUserIds);
     console.log(match);
-}
-// const deleteMatched = (matchedUserId) => {
-//     const newGenderedUsers = genderedUsers.filter(
-//         (genderedUser) => genderedUser.user_id !== matchedUserId
-//     );
-//     setGenderedUsers(newGenderedUs
-
+  }
+  const deleteMatched = (matchedUserId) => {
+    try {
+      axios.delete("http://localhost:8000/delete-match", {
+        params: { userId, matchedUserId },
+      });
+      getUser();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   function getRandomMatch() {
-    if (filteredGenderedUsers[0]) {
-        console.log("no gendered users");
+    if (!filteredGenderedUsers[0]) {
+      console.log("no gendered users");
       setMatch({
         about: "You're too Picky!",
         dob_day: "20",
@@ -100,8 +104,8 @@ function logAll(){
         dob_year: "1969",
         url: "https://cdn.pixabay.com/photo/2022/08/01/10/36/tulips-7357877_1280.jpg",
       });
-    } else {
-      console.log("here aree filtered",filteredGenderedUsers);
+    }else {
+      console.log("here aree filtered", filteredGenderedUsers);
       const newMatch =
         filteredGenderedUsers[
           Math.floor(Math.random() * filteredGenderedUsers.length)
@@ -110,10 +114,10 @@ function logAll(){
       console.log(newMatch);
       updateMatches(newMatch.user_id);
     }
-  }
-useEffect(()=>{
-    console.log("match",match)
-},[match])
+}
+  useEffect(() => {
+    console.log("match", match);
+  }, [match]);
   console.log("filteredGenderedUsers ", filteredGenderedUsers);
   return (
     <>
@@ -125,19 +129,12 @@ useEffect(()=>{
               {match && (
                 <div>
                   <h1>{match.first_name}</h1>
-                    <img src={match.url} alt="match" />
-                    <h1>{match.about}</h1>
+                  <img src={match.url} alt="match" />
+                  <h1>{match.about}</h1>
                 </div>
               )}
               {!match && <button onClick={getRandomMatch}>Random match</button>}
-                <button onClick={logAll}>
-                    console log all stuff
-                </button>
-                if(filteredGenderedUsers[0]){
-                <button onClick={deleteMatched}>
-                    Go through the list again!
-                </button>
-                }
+              <button onClick={logAll}>console log all stuff</button>
               <div className="swipe-info">
                 {lastDirection ? <p>You swiped {lastDirection}</p> : <p />}
               </div>
@@ -167,3 +164,4 @@ export default Dashboard;
 //                                 </div>
 //                             </TinderCard>
 //                         )}
+

@@ -251,6 +251,10 @@ app.post('/message', async (req, res) => {
         await client.close()
     }
 })
+//delete a matched user
+app.delete('/delete-match', async (req, res) => {
+    const client = new MongoClient(uri)
+    const {userId, matchedUserId} = req.body
 
 
 app.listen(PORT, () => console.log('server running on PORT ' + PORT))

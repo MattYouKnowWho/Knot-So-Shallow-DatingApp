@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 const ChatContainer = ({ user, match, setMatch }) => {
     const [ clickedUser, setClickedUser ] = useState(null)
-
+    console.log("chat container loaded");
     return (
         <div className="chat-container">
             <ChatHeader user={user}/>
