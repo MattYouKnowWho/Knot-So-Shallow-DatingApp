@@ -23,12 +23,16 @@ h2 {
     color: rgb(255,255,255);
     text-transform: uppercase;
     font-size: 21px;
-    background: linear-gradient(120deg, #edf756, #ffa8B6, #9df9ef);
+    /* background: linear-gradient(120deg, #edf756, #ffa8B6, #9df9ef); */
+    background: linear-gradient(60deg, rgb(231, 205, 163),
+     rgb(58, 100, 137), rgb(201, 162, 153));
     padding: 16px 24px;
     border-radius: 30px;
     border: none;
     background-repeat: no-repeat;
-  background-position: -120px -120px, 0 0;
+    background-position: -120px -120px, 0 0;
+
+   
   
   background-image: -webkit-linear-gradient(
     top left,
@@ -66,12 +70,40 @@ h2 {
      -moz-transition: background-position 0s ease;       
        -o-transition: background-position 0s ease;
           transition: background-position 0s ease;
+
+     /*shake account button*/
+     transform: translate3d(0, 0, 0);
+     backface-visibility: hidden;
+     animation-duration: 5s;
+     animation-iteration-count: infinite;
+     animation-timing-function: linear;
+
+
+}
+@keyframes primary-button{
+    2%, 18% {
+        transform: translate3d(-5px, 0, 0);
+    }
+
+    4%, 16% {
+        transform: translate3d(5px, 0, 0);
+    }
+
+    6%, 10%, 14% {
+        transform: translate3d(-5px, 0, 0);
+    }
+
+    8%, 12% {
+        transform: translate3d(5px, 0, 0);
+    }
+    
+    18.1% {
+        transform: translate3d(0px, 0, 0);
+    }
 }
 
-
 .primary-button:hover {
-    background: linear-gradient(120deg, #ffa8B6,
-    white);
+    background: linear-gradient(42deg, rgb(48, 100, 145), rgb(184, 137, 125));
     background-position: 0 0, 0 0;
   
   -webkit-transition-duration: 0.5s;
@@ -108,18 +140,20 @@ nav {
 }
 
 nav .nav-button {
-    color: rgb(254, 48, 114);
-    background-color: rgb(255, 255, 255);
-    font-size: 20px;
+    color: white;
+    background: linear-gradient(42deg, rgb(213, 156, 77), rgb(35, 81, 121), rgb(170, 124, 112));
+    font-size: 22px;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 30px;
     border: none;
-    margin: 10px;
+    margin: 34px;
+    transition: 0.5s;
 }
 
-nav .nav-button:disabled {
+nav .nav-button:hover {
     background-color: rgb(181, 180, 180);
-    color: rgb(189, 42, 90);
+    color: white;
+    transform: scale(1.2);
 }
 
 nav .logo-container {
