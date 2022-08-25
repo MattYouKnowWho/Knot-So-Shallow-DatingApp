@@ -69,7 +69,7 @@ const Dashboard = () => {
     console.log(name + " left the screen!");
   };
 
-  const matchedUserIds = user?.matches
+  const matchedUserIds = user?.matches && user?.matches
     .map(({ user_id }) => user_id)
     .concat(userId);
 
