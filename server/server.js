@@ -255,6 +255,19 @@ app.post('/message', async (req, res) => {
 app.delete('/delete-match', async (req, res) => {
     const client = new MongoClient(uri)
     const {userId, matchedUserId} = req.body
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+        const updatedUsers = await users.updateOne(
+        { user_id: userId },
+        {$set:{ matches: []}}
+      );
+        res.send(updatedUsers)
+    } finally {
+        await client.close()
+    }   
+
 })
 
 app.listen(PORT, () => console.log('server running on PORT ' + PORT))
