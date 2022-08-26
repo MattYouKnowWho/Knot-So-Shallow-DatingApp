@@ -16,14 +16,15 @@ h2 {
 
 .primary-title {
     font-size: 90px;
-    color: rgb(255, 255, 255);
+    color: rgb(58, 100, 137);
 }
 
 .primary-button {
     color: rgb(255,255,255);
     text-transform: uppercase;
     font-size: 21px;
-    background: linear-gradient(120deg, #edf756, #ffa8B6, #9df9ef);
+    background: linear-gradient(120deg, rgb(231, 205, 163),rgb(58, 100, 137),
+     rgb(201, 162, 153));
     padding: 16px 24px;
     border-radius: 30px;
     border: none;
@@ -46,17 +47,17 @@ h2 {
   );    
   background-image: -o-linear-gradient(
     0 0,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0.2) 37%,
+    rgb(231, 205, 163) 0%,
+    rgb(58, 100, 137) 37%,
     rgba(255, 255, 255, 0.8) 45%,
     rgba(255, 255, 255, 0.0) 50%
   );
   background-image: linear-gradient(
     0 0,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0.2) 37%,
+    rgb(58, 100, 137)) 0%,
+    rgb(201, 162, 153) 37%,
     rgba(255, 255, 255, 0.8) 45%,
-    rgba(255, 255, 255, 0.0) 50%
+    rgb(231, 205, 163) 50%,
   );
   
   -moz-background-size: 250% 250%, 100% 100%;
@@ -66,11 +67,11 @@ h2 {
      -moz-transition: background-position 0s ease;       
        -o-transition: background-position 0s ease;
           transition: background-position 0s ease;
-}
+};
 
 
 .primary-button:hover {
-    background: linear-gradient(120deg, #ffa8B6,
+    background: linear-gradient(120deg, rgb(58, 100, 137),
     white);
     background-position: 0 0, 0 0;
   
@@ -82,20 +83,20 @@ h2 {
 
 
 .secondary-button {
-    color: rgb(121, 119, 119);
-    background-color: rgb(255, 255, 255);
+    color: rgb(231, 205, 163);
+    background-color: rgb(201, 162, 153);
     font-weight: 500;
     font-size: 15px;
     text-transform: uppercase;
     padding: 12px 30px;
     border-radius: 30px;
-    border: solid 2px rgb(121, 119, 119);
+    border: solid 2px rgb(58, 100, 137);
     margin: 6px;
 }
 
 .secondary-button:hover {
-    color: rgb(48, 48, 48);
-    border: solid 2px rgb(48, 48, 48);
+    color: rgb(201, 162, 153);
+    border: solid 2px rgb(58, 100, 137);
 }
 
 
@@ -108,8 +109,8 @@ nav {
 }
 
 nav .nav-button {
-    color: rgb(254, 48, 114);
-    background-color: rgb(255, 255, 255);
+    color: rgb(231, 205, 163);
+    background-color: rgb(58, 100, 137);
     font-size: 20px;
     padding: 10px 20px;
     border-radius: 10px;
@@ -118,8 +119,8 @@ nav .nav-button {
 }
 
 nav .nav-button:disabled {
-    background-color: rgb(181, 180, 180);
-    color: rgb(189, 42, 90);
+    background-color: rgb(58, 100, 137);
+    color: rgb(231, 205, 163);
 }
 
 nav .logo-container {
@@ -156,7 +157,7 @@ nav .logo-container .logo {
     margin-right: auto;
     max-width: 360px;
     height: 600px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(231, 205, 163);
     border-radius: 10px;
     padding: 40px;
 }
@@ -179,7 +180,7 @@ nav .logo-container .logo {
 
 /*-------- OnBoarding Page --------*/
 .onboarding {
-    border-top: solid 1px rgb(213, 213, 213);
+    border-top: solid 1px rgb(201, 162, 153);
 }
 
 .onboarding form {
@@ -199,7 +200,7 @@ nav .logo-container .logo {
     padding: 15px 30px;
     margin: 10px 0;
     font-size: 15px;
-    border: solid 2px rgb(219, 219, 219);
+    border: solid 2px rgb(58, 100, 137);
     border-radius: 10px;
 }
 
@@ -224,7 +225,7 @@ nav .logo-container .logo {
 
 .onboarding form .multiple-input-container label {
     padding: 10px;
-    border: solid 2px rgb(144, 144, 144);
+    border: solid 2px rgb(201, 162, 153);
     border-radius: 10px;
     transition: all 0.3s;
     margin-right: 10px;
@@ -239,15 +240,15 @@ nav .logo-container .logo {
 }
 
 .onboarding form input[type=radio]:checked + label {
-    border: solid 2px rgb(221, 39, 22);
+    border: solid 2px rgb(58, 100, 137);
 }
 
 .onboarding form input[type=submit]:hover {
-    background-color: rgb(235, 235, 235);
+    background-color: rgb(231, 205, 163);
 }
 
 .onboarding form input[type=submit]:active {
-    background-color: rgb(226, 115, 115);
+    background-color: rgb(201, 162, 153);
 }
 
 .onboarding form .photo-container img {
@@ -298,16 +299,16 @@ nav .logo-container .logo {
 
 /*-------- Chat Container --------*/
 .chat-container {
-    background-color: rgb(255, 255, 255);
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    background-color: rgb(58, 100, 137);
+    box-shadow: rgb(201, 162, 153) 0px 6px 24px 0px,
+    rgb(231, 205, 163) 0px 0px 0px 1px;
     width: 30%;
     text-align: left;
     z-index: 1;
 }
 
 .chat-container .chat-container-header {
-    background: linear-gradient(45deg, rgb(254, 48, 114), rgb(255, 89, 64));
+    background: linear-gradient(45deg, rgb(231, 205, 163), rgb(58, 100, 137));
     height: 100px;
     display: flex;
     justify-content: space-between;
@@ -317,14 +318,14 @@ nav .logo-container .logo {
 .chat-container .option {
     border: none;
     background-color: rgb(255, 255, 255);
-    border-bottom: solid 4px rgb(243, 33, 33);
+    border-bottom: solid 4px rgb(58, 100, 137);
     font-size: 20px;
     margin: 2px;
     padding: 10px;
 }
 
 .chat-container .option:disabled {
-    border-bottom: solid 4px rgb(187, 187, 187);
+    border-bottom: solid 4px rgb(231, 205, 163);
 }
 
 .chat-container .profile,
@@ -332,7 +333,7 @@ nav .logo-container .logo {
     display: flex;
     align-items: center;
     padding: 20px;
-    color: rgb(255, 255, 255);
+    color: rgb(58, 100, 137);
 }
 
 .img-container {
