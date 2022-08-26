@@ -46,8 +46,14 @@ const AuthModal = ({ setShowModal,  isSignUp }) => {
 
     }
 
-    return (
-        <div className="auth-modal">
+    const clickOutside = (e) => {
+        console.log(e.target)
+        if (e.target.id === 'modal-body') return
+        else setShowModal(false)
+    }
+
+    return (< div onClick={clickOutside} style={{backgroundImage:'url(https://images.unsplash.com/photo-1508615174679-3eaad52c4d16?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80)' , width: '100vw', height: '100vh', position: 'fixed'}}>
+        <div id="modal-body" className="auth-modal">
             <div className="close-icon" onClick={handleClick}>ⓧ</div>
 
             <h2>{isSignUp ? 'CREATE ACCOUNT': 'LOG IN'}</h2>
@@ -85,6 +91,6 @@ const AuthModal = ({ setShowModal,  isSignUp }) => {
             <h2>GET THE APP</h2>
 
         </div>
-    )
+        </div>)
 }
 export default AuthModal

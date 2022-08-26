@@ -137,13 +137,15 @@ nav {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 nav .nav-button {
     color: white;
     background: linear-gradient(42deg, rgb(213, 156, 77), rgb(35, 81, 121), rgb(170, 124, 112));
     font-size: 22px;
-    padding: 10px 20px;
+    padding: 15px 30px;
+    height: fit-content;
     border-radius: 30px;
     border: none;
     margin: 34px;
@@ -158,11 +160,12 @@ nav .nav-button:hover {
 
 nav .logo-container {
     width: 170px;
-    margin: 15px;
 }
 
 nav .logo-container .logo {
-    width: 100%;
+    width: 300px;
+    height: 100px;
+    object-fit: cover;
 }
 
 /*-------- Home page --------*/
