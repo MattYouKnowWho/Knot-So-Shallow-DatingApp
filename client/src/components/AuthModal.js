@@ -48,7 +48,8 @@ const AuthModal = ({ setShowModal,  isSignUp }) => {
 
     const clickOutside = (e) => {
         console.log(e.target)
-        if (e.target.id === 'modal-body') return
+        console.log(e.target.closest("#modal-body"))
+        if (e.target.closest("#modal-body")) return
         else setShowModal(false)
     }
 
