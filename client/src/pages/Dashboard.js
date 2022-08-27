@@ -4,13 +4,12 @@ import ChatContainer from "../components/ChatContainer";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 
-const Dashboard = () => {
-  const [user, setUser] = useState(null);
+const Dashboard = ({ user, setUser }) => {
   const [genderedUsers, setGenderedUsers] = useState(null);
   const [lastDirection, setLastDirection] = useState();
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [match, setMatch] = useState(null);
-
+  console.log("USER IN DASHBOARD", user);
   const userId = cookies.UserId;
 
   const getUser = async () => {
@@ -37,10 +36,6 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
-
-  useEffect(() => {
     if (user) {
       getGenderedUsers();
     }
@@ -48,10 +43,11 @@ const Dashboard = () => {
 
   const updateMatches = async (matchedUserId) => {
     try {
-      await axios.put("http://localhost:8000/addmatch", {
+      const updatedUser = await axios.put("http://localhost:8000/addmatch", {
         userId,
         matchedUserId,
       });
+      //this is ok to refetch. ideally don't do it
       getUser();
     } catch (err) {
       console.log(err);
@@ -69,9 +65,8 @@ const Dashboard = () => {
     console.log(name + " left the screen!");
   };
 
-  const matchedUserIds = user?.matches && user?.matches
-    .map(({ user_id }) => user_id)
-    .concat(userId);
+  const matchedUserIds =
+    user?.matches && user?.matches.map(({ user_id }) => user_id).concat(userId);
 
   const filteredGenderedUsers = genderedUsers?.filter(
     (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
@@ -104,7 +99,7 @@ const Dashboard = () => {
         dob_year: "1969",
         url: "https://cdn.pixabay.com/photo/2022/08/01/10/36/tulips-7357877_1280.jpg",
       });
-    }else {
+    } else {
       console.log("here aree filtered", filteredGenderedUsers);
       const newMatch =
         filteredGenderedUsers[
@@ -114,7 +109,7 @@ const Dashboard = () => {
       console.log(newMatch);
       updateMatches(newMatch.user_id);
     }
-}
+  }
   useEffect(() => {
     console.log("match", match);
   }, [match]);
@@ -164,4 +159,3 @@ export default Dashboard;
 //                                 </div>
 //                             </TinderCard>
 //                         )}
-
