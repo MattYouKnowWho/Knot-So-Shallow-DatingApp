@@ -20,13 +20,15 @@ app.get("/", (req, res) => {
 
 // Sign up to the Database
 app.post("/signup", async (req, res) => {
-  const client = new MongoClient(uri);
+  let client;
+  try {  
+  client = new MongoClient(uri);
   const { email, password } = req.body;
 
   const generatedUserId = uuidv4();
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  try {
+
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
@@ -54,6 +56,7 @@ app.post("/signup", async (req, res) => {
     res.status(201).json({ token, userId: generatedUserId });
   } catch (err) {
     console.log(err);
+    res.status(400).json({ message: 'Erro'})
   } finally {
     await client.close();
   }
