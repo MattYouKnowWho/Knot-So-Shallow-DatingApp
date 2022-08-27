@@ -1,5 +1,6 @@
-import whiteLogo from "../images/tinder_logo_white.png";
-import colorLogo from "../images/color-logo-tinder.png";
+import { useNavigate } from "react-router-dom";
+import whiteLogo from "../images/KnotSoShallow.png";
+import colorLogo from "../images/KnotSoShallow.png";;
 
 const Nav = ({ authToken, minimal, setShowModal, showModal, setIsSignUp }) => {
   const handleClick = () => {
@@ -7,9 +8,11 @@ const Nav = ({ authToken, minimal, setShowModal, showModal, setIsSignUp }) => {
     setIsSignUp(false);
   };
 
+  let navigate = useNavigate()
+
   return (
     <nav>
-      <div className="logo-container">
+      <div className="logo-container" onClick={() => navigate('/')}>
         <img
           className="logo"
           src={minimal ? colorLogo : whiteLogo}
