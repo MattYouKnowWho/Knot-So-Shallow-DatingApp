@@ -114,20 +114,20 @@ h2 {
 
 
 .secondary-button {
-    color: rgb(231, 205, 163);
-    background-color: rgb(201, 162, 153);
+    color: rgb(121, 119, 119);
+    background-color: rgb(255, 255, 255);
     font-weight: 500;
-    font-size: 15px;
+    font-size: 18px;
     text-transform: uppercase;
     padding: 12px 30px;
     border-radius: 30px;
-    border: solid 2px rgb(58, 100, 137);
+    border: solid 2px rgb(121, 119, 119);
     margin: 6px;
 }
 
 .secondary-button:hover {
-    color: rgb(201, 162, 153);
-    border: solid 2px rgb(58, 100, 137);
+    color: rgb(48, 48, 48);
+    border: solid 2px rgb(48, 48, 48);
 }
 
 
@@ -193,7 +193,7 @@ nav .logo-container .logo {
     margin-right: auto;
     max-width: 360px;
     height: 600px;
-    background-color: rgb(231, 205, 163);
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
     padding: 40px;
 }
