@@ -1,32 +1,29 @@
-import TinderCard from "react-tinder-card";
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
 import ChatContainer from "../components/ChatContainer";
-import { useCookies } from "react-cookie";
 import axios from "axios";
+import { userAtom } from "../state";
 
-const Dashboard = ({ user, setUser }) => {
+const Dashboard = () => {
   const [genderedUsers, setGenderedUsers] = useState(null);
-  const [lastDirection, setLastDirection] = useState();
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [match, setMatch] = useState(null);
-  console.log("USER IN DASHBOARD", user);
-  const userId = cookies.UserId;
-
-  const getUser = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/user", {
-        params: { userId },
-      });
-      setUser(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [user, setUser] = useAtom(userAtom);
+  // const getUser = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:8000/user", {
+  //       params: { userId },
+  //     });
+  //     setUser(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const getGenderedUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/gendered-users", {
-        params: { gender: user?.gender_interest },
+      const response = await axios.post("http://localhost:8000/getmatch", {
+        gender: user?.gender_interest,
+        userId: user?.userId,
       });
       setGenderedUsers(response.data);
       console.log(response.data);
@@ -35,40 +32,31 @@ const Dashboard = ({ user, setUser }) => {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      getGenderedUsers();
-    }
-  }, [user]);
-
+  // useEffect(() => {
+  //   if (user) {
+  //     getGenderedUsers();
+  //   }
+  // }, [user]);
+//right now just calling when first mounting
+  useEffect(getGenderedUsers, []);
   const updateMatches = async (matchedUserId) => {
     try {
       const updatedUser = await axios.put("http://localhost:8000/addmatch", {
-        userId,
+        userId: user.userId,
         matchedUserId,
       });
       //this is ok to refetch. ideally don't do it
-      getUser();
+      // getUser();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const swiped = (direction, swipedUserId) => {
-    if (direction === "right") {
-      updateMatches(swipedUserId);
-    }
-    setLastDirection(direction);
-  };
-
-  const outOfFrame = (name) => {
-    console.log(name + " left the screen!");
-  };
-
   const matchedUserIds =
-    user?.matches && user?.matches.map(({ user_id }) => user_id).concat(userId);
+    user?.matches &&
+    user?.matches.map(({ user_id }) => user_id).concat(user.userId);
 
-  const filteredGenderedUsers = genderedUsers?.filter(
+  const filteredGenderedUsers = genderedUsers?.filter?.(
     (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
   );
   function logAll() {
@@ -78,16 +66,6 @@ const Dashboard = ({ user, setUser }) => {
     console.log(matchedUserIds);
     console.log(match);
   }
-  const deleteMatched = (matchedUserId) => {
-    try {
-      axios.delete("http://localhost:8000/delete-match", {
-        params: { userId, matchedUserId },
-      });
-      getUser();
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   function getRandomMatch() {
     if (!filteredGenderedUsers[0]) {
@@ -130,32 +108,13 @@ const Dashboard = ({ user, setUser }) => {
               )}
               {!match && <button onClick={getRandomMatch}>Random match</button>}
               <button onClick={logAll}>console log all stuff</button>
-              <div className="swipe-info">
-                {lastDirection ? <p>You swiped {lastDirection}</p> : <p />}
-              </div>
             </div>
           </div>
         </div>
-      ) : <p>Could not find user from databse</p>}
+      ) : (
+        <p>Could not find user from databse</p>
+      )}
     </>
   );
 };
 export default Dashboard;
-// {filteredGenderedUsers?.map((genderedUser) =>
-//                             <TinderCard
-//                                 className="swipe"
-//                                 key={genderedUser.user_id}
-//                                 onSwipe={(dir) => swiped(dir, genderedUser.user_id)}
-//                                 onCardLeftScreen={() => outOfFrame(genderedUser.first_name)}>
-//                                 <div
-//                                     style={{backgroundImage: "url(" + genderedUser.url + ")"}}
-//                                     className="card">
-//                                     <h3>{genderedUser.first_name}</h3>
-//                                 </div>
-//                                 <div className="randomButton"
-//                                      key={genderedUser.user_id}
-//                                      onClick={() => swiped(lastDirection, genderedUser.user_id)}>
-//                                         {/* random match button */}
-//                                 </div>
-//                             </TinderCard>
-//                         )}

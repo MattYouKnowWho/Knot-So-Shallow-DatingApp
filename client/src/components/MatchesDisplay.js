@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
-const MatchesDisplay = ({ matches, setClickedUser }) => {
+const MatchesDisplay = ({ matches = [], setClickedUser }) => {
   const [matchedProfiles, setMatchedProfiles] = useState(matches);
   const [cookies, setCookie, removeCookie] = useCookies(null);
 
@@ -17,6 +17,7 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
       setMatchedProfiles(response.data);
     } catch (error) {
       console.log(error);
+      setMatchedProfiles([])
     }
   };
 

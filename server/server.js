@@ -73,7 +73,7 @@ app.post("/login", async (req, res) => {
     const users = database.collection("users");
 
     const user = await users.findOne({ email });
-
+    if(!user) return res.status(401).send("User not found");
     const correctPassword = await bcrypt.compare(
       password,
       user.hashed_password
@@ -120,7 +120,7 @@ app.get("/user", async (req, res) => {
 app.put("/addmatch", async (req, res) => {
   const client = new MongoClient(uri);
   const { userId, matchedUserId } = req.body;
-
+//TODO --- matches and past maches, update both users?
   try {
     await client.connect();
     const database = client.db("app-data");
@@ -128,7 +128,7 @@ app.put("/addmatch", async (req, res) => {
 
     const query = { user_id: userId };
     const updateDocument = {
-      $push: { matches: { user_id: matchedUserId } },
+      $push: { matches: { user_id: matchedUserId }},
     };
     const user = await users.updateOne(query, updateDocument);
     res.send(user);
@@ -136,6 +136,15 @@ app.put("/addmatch", async (req, res) => {
     await client.close();
   }
 });
+
+app.post("/getmatch", (req,res) => {
+  //start off true random, later factor into parameters
+  console.log(req.body.gender, req.body.userId, "GENDER");
+
+  //need to get random user who is not the current user
+  //do DB stuff here
+  res.json("ok")
+})
 
 // Get all Users by userIds in the Database
 app.get("/users", async (req, res) => {

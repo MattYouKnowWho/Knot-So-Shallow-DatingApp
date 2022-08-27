@@ -1,13 +1,16 @@
 import { useCookies } from 'react-cookie'
-
-const ChatHeader = ({ user }) => {
+import { useAtom } from 'jotai'
+import { userAtom } from '../state'
+const ChatHeader = () => {
     const [ cookies, setCookie, removeCookie ] = useCookies(['user'])
-
+    const [user, setUser] = useAtom(userAtom);
     const logout = () => {
         removeCookie('UserId', cookies.UserId)
         removeCookie('AuthToken', cookies.AuthToken)
         window.location.reload()
     }
+
+
 
     return (
         <div className="chat-container-header">
