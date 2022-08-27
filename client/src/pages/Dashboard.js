@@ -116,7 +116,7 @@ const Dashboard = ({ user, setUser }) => {
   console.log("filteredGenderedUsers ", filteredGenderedUsers);
   return (
     <>
-      {user && (
+      {user ? (
         <div className="dashboard">
           <ChatContainer user={user} match={match} setMatch={setMatch} />
           <div className="swipe-container">
@@ -136,7 +136,7 @@ const Dashboard = ({ user, setUser }) => {
             </div>
           </div>
         </div>
-      )}
+      ) : <p>Could not find user from databse</p>}
     </>
   );
 };

@@ -96,17 +96,21 @@ app.post("/login", async (req, res) => {
 
 // Get individual user
 app.get("/user", async (req, res) => {
-  const client = new MongoClient(uri);
-  const userId = req.query.userId;
+  let client;
 
   try {
+    client = new MongoClient(uri);
+    const userId = req.query.userId;
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
 
     const query = { user_id: userId };
     const user = await users.findOne(query);
-    return res.send(user);
+    return res.status(200).json(user);
+  } catch(err) {
+    console.log(err);
+    res.status(400).json({ message: 'Error'})
   } finally {
     await client.close();
   }
