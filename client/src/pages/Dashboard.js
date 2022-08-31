@@ -32,21 +32,22 @@ const Dashboard = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     getGenderedUsers();
-  //   }
-  // }, [user]);
-//right now just calling when first mounting
-  useEffect(getGenderedUsers, []);
+  useEffect(() => {
+    console.log("user", user);
+    if (user) {
+      console.log(user)
+      getGenderedUsers();
+    }
+  }, [user]);
+
   const updateMatches = async (matchedUserId) => {
     try {
       const updatedUser = await axios.put("http://localhost:8000/addmatch", {
-        userId: user.userId,
+        userId: user?.userId,
         matchedUserId,
       });
       //this is ok to refetch. ideally don't do it
-      // getUser();
+      //getUser();
     } catch (err) {
       console.log(err);
     }
@@ -68,7 +69,7 @@ const Dashboard = () => {
   }
 
   function getRandomMatch() {
-    if (!filteredGenderedUsers[0]) {
+    if (!filteredGenderedUsers?.[0]) {
       console.log("no gendered users");
       setMatch({
         about: "You're too Picky!",
