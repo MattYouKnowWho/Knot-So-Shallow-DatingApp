@@ -89,7 +89,7 @@ const AuthModal = ({ setShowModal,  isSignUp }) => {
             </form>
 
             <hr/>
-            <h2>GET THE APP</h2>
+            <h2>HAVE FUN!</h2>
 
         </div>
         </div>)
