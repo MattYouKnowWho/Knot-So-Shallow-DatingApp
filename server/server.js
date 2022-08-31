@@ -140,9 +140,8 @@ app.put("/addmatch", async (req, res) => {
 app.post("/getmatch", (req,res) => {
   //start off true random, later factor into parameters
   console.log(req.body.gender, req.body.userId, "GENDER");
-//TODO, HERE
-  //need to get random user who is not the current user
-  //do DB stuff here
+//TODO use the mongoose model to find a match taht is the same gener they are looking for
+// hi :)
   res.json("ok")
 })
 
