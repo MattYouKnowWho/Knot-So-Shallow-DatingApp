@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
-const MatchesDisplay = ({ matches, setClickedUser }) => {
+const MatchesDisplay = ({ matches = [], setClickedUser }) => {
   const [matchedProfiles, setMatchedProfiles] = useState(matches);
   const [cookies, setCookie, removeCookie] = useCookies(null);
 
@@ -11,12 +11,13 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
 
   const getMatches = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/users", {
-        params: { userIds: JSON.stringify(matchedUserIds) },
+      const response = await axios.post("http://localhost:8000/getmatches", {
+        userIds: matchedUserIds || [],
       });
       setMatchedProfiles(response.data);
     } catch (error) {
       console.log(error);
+      setMatchedProfiles([])
     }
   };
 
@@ -29,10 +30,10 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
   //     matchedProfile.matches.filter((profile) => profile.user_id == userId)
   //       .length > 0
   // );
-console.log("this is the matches", matches)
+  console.log("this is the matches", matches);
   return (
     <div className="matches-display">
-      {matchedProfiles?.map((match, _index) => (
+      {(matches || matchedProfiles)?.map((match, _index) => (
         <div
           key={_index}
           className="match-card"

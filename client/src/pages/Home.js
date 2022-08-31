@@ -8,6 +8,7 @@ const Home = () => {
     const [isSignUp, setIsSignUp] = useState(true)
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
     const authToken = cookies.AuthToken
+    console.log("my auth token is", authToken)
 
     const handleClick = () => {
         if (authToken) {
@@ -20,7 +21,7 @@ const Home = () => {
         setIsSignUp(true)
     }
 
-    return (
+    return (<>
         <div className="overlay">
             <Nav
                 authToken={authToken}
@@ -30,17 +31,18 @@ const Home = () => {
                 setIsSignUp={setIsSignUp}
             />
             <div className="home">
-                <h1 className="primary-title">Not So Shallow</h1>
+                <h1 className="primary-title">Knot So Shallow</h1>
                 <button className="primary-button" onClick={handleClick}>
                     {authToken ? 'Signout' : 'Create Account'}
                 </button>
 
 
-                {showModal && (
-                    <AuthModal setShowModal={setShowModal} isSignUp={isSignUp}/>
-                )}
+                
             </div>
         </div>
-    )
+        {showModal && (
+            <AuthModal setShowModal={setShowModal} isSignUp={isSignUp}/>
+        )}
+    </>)
 }
 export default Home

@@ -1,33 +1,29 @@
-import TinderCard from "react-tinder-card";
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
 import ChatContainer from "../components/ChatContainer";
-import { useCookies } from "react-cookie";
 import axios from "axios";
+import { userAtom } from "../state";
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
   const [genderedUsers, setGenderedUsers] = useState(null);
-  const [lastDirection, setLastDirection] = useState();
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [match, setMatch] = useState(null);
-
-  const userId = cookies.UserId;
-
-  const getUser = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/user", {
-        params: { userId },
-      });
-      setUser(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [user, setUser] = useAtom(userAtom);
+  // const getUser = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:8000/user", {
+  //       params: { userId },
+  //     });
+  //     setUser(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const getGenderedUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/gendered-users", {
-        params: { gender: user?.gender_interest },
+      const response = await axios.post("http://localhost:8000/getmatch", {
+        gender: user?.gender_interest,
+        userId: user?.userId,
       });
       setGenderedUsers(response.data);
       console.log(response.data);
@@ -37,43 +33,31 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
-
-  useEffect(() => {
+    console.log("user", user);
     if (user) {
+      console.log(user)
       getGenderedUsers();
     }
   }, [user]);
 
   const updateMatches = async (matchedUserId) => {
     try {
-      await axios.put("http://localhost:8000/addmatch", {
-        userId,
+      const updatedUser = await axios.put("http://localhost:8000/addmatch", {
+        userId: user?.userId,
         matchedUserId,
       });
-      getUser();
+      //this is ok to refetch. ideally don't do it
+      //getUser();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const swiped = (direction, swipedUserId) => {
-    if (direction === "right") {
-      updateMatches(swipedUserId);
-    }
-    setLastDirection(direction);
-  };
+  const matchedUserIds =
+    user?.matches &&
+    user?.matches.map(({ user_id }) => user_id).concat(user.userId);
 
-  const outOfFrame = (name) => {
-    console.log(name + " left the screen!");
-  };
-
-  const matchedUserIds = user?.matches && user?.matches
-    .map(({ user_id }) => user_id)
-    .concat(userId);
-
-  const filteredGenderedUsers = genderedUsers?.filter(
+  const filteredGenderedUsers = genderedUsers?.filter?.(
     (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
   );
   function logAll() {
@@ -83,19 +67,9 @@ const Dashboard = () => {
     console.log(matchedUserIds);
     console.log(match);
   }
-  const deleteMatched = (matchedUserId) => {
-    try {
-      axios.delete("http://localhost:8000/delete-match", {
-        params: { userId, matchedUserId },
-      });
-      getUser();
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   function getRandomMatch() {
-    if (!filteredGenderedUsers[0]) {
+    if (!filteredGenderedUsers?.[0]) {
       console.log("no gendered users");
       setMatch({
         about: "You're too Picky!",
@@ -104,7 +78,7 @@ const Dashboard = () => {
         dob_year: "1969",
         url: "https://cdn.pixabay.com/photo/2022/08/01/10/36/tulips-7357877_1280.jpg",
       });
-    }else {
+    } else {
       console.log("here aree filtered", filteredGenderedUsers);
       const newMatch =
         filteredGenderedUsers[
@@ -114,14 +88,14 @@ const Dashboard = () => {
       console.log(newMatch);
       updateMatches(newMatch.user_id);
     }
-}
+  }
   useEffect(() => {
     console.log("match", match);
   }, [match]);
   console.log("filteredGenderedUsers ", filteredGenderedUsers);
   return (
     <>
-      {user && (
+      {user ? (
         <div className="dashboard">
           <ChatContainer user={user} match={match} setMatch={setMatch} />
           <div className="swipe-container">
@@ -135,33 +109,13 @@ const Dashboard = () => {
               )}
               {!match && <button onClick={getRandomMatch}>Random match</button>}
               <button onClick={logAll}>console log all stuff</button>
-              <div className="swipe-info">
-                {lastDirection ? <p>You swiped {lastDirection}</p> : <p />}
-              </div>
             </div>
           </div>
         </div>
+      ) : (
+        <p>Could not find user from databse</p>
       )}
     </>
   );
 };
 export default Dashboard;
-// {filteredGenderedUsers?.map((genderedUser) =>
-//                             <TinderCard
-//                                 className="swipe"
-//                                 key={genderedUser.user_id}
-//                                 onSwipe={(dir) => swiped(dir, genderedUser.user_id)}
-//                                 onCardLeftScreen={() => outOfFrame(genderedUser.first_name)}>
-//                                 <div
-//                                     style={{backgroundImage: "url(" + genderedUser.url + ")"}}
-//                                     className="card">
-//                                     <h3>{genderedUser.first_name}</h3>
-//                                 </div>
-//                                 <div className="randomButton"
-//                                      key={genderedUser.user_id}
-//                                      onClick={() => swiped(lastDirection, genderedUser.user_id)}>
-//                                         {/* random match button */}
-//                                 </div>
-//                             </TinderCard>
-//                         )}
-

@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 const ChatContainer = ({ user, match, setMatch }) => {
     const [ clickedUser, setClickedUser ] = useState(null)
-    console.log("chat container loaded");
+    console.log("chat container loaded", user);
     function deleteMatch(){
         setMatch(null)
         fetch('http://localhost:8000/delete-match', {
