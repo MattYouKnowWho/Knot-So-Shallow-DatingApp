@@ -128,7 +128,7 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-        <p>Could not find user from databse</p>
+       <div class="loader"></div>
       )}
     </>
   );
