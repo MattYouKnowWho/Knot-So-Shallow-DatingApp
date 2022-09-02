@@ -14,9 +14,9 @@ app.use(cors());
 app.use(express.json());
 
 // Default
-app.get("/", (req, res) => {
-  res.json("Hello to my app");
-});
+// app.get("/", (req, res) => {
+//   res.json("Hello to my app");
+// });
 
 // Sign up to the Database
 app.post("/signup", async (req, res) => {
@@ -284,5 +284,9 @@ app.delete("/delete-match", async (req, res) => {
     await client.close();
   }
 });
+
+app.get("*", (req,res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"))
+})
 
 app.listen(PORT, () => console.log("server running on PORT " + PORT));
