@@ -8,9 +8,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import decode from "jwt-decode";
 import Nav from "./components/Nav";
+import {getRandomUsers} from './api'
 // import jotai
 const App = () => {
   //this returns the cookie from session storage
+  getRandomUsers().then(data => console.log("RANDOM USERS", data))
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [user, setUser] = useAtom(userAtom);
   useEffect(() => {
