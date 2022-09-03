@@ -56,13 +56,13 @@ app.post("/signup", async (req, res) => {
     const token = jwt.sign(insertedUser, sanitizedEmail, {
       expiresIn: 60 * 24,
     });
-    console.log('this is a token',token)
-    console.log('this is the data',data)
+    console.log("this is a token", token);
+    console.log("this is the data", data);
 
     res.status(201).json({ token, userId: generatedUserId });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ message: 'Error'})
+    res.status(400).json({ message: "Error" });
   } finally {
     await client.close();
   }
@@ -113,6 +113,7 @@ app.get("/user", async (req, res) => {
 
     const query = { user_id: userId };
     const user = await users.findOne(query);
+    console.log("USER", user)
     return res.status(200).json(user);
   } catch (err) {
     console.log(err);
@@ -143,12 +144,27 @@ app.put("/addmatch", async (req, res) => {
   }
 });
 
-app.post("/getmatch", (req, res) => {
+app.post("/getmatch", async (req, res) => {
   //start off true random, later factor into parameters
-  console.log(req.body.gender, req.body.userId, "GENDER");
+  console.log(req.body.gender, "GENDER");
   //TODO use the mongoose model to find a match taht is the same gener they are looking for
-  // hi :)
-  res.json("ok");
+  try {
+    const uri =
+      "mongodb+srv://root:root@cluster0.54y1gfg.mongodb.net/?retryWrites=true&w=majority";
+
+    client = new MongoClient(uri);
+
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+    const matches = await users.find({ gender_identity: req.body.gender }).toArray();
+    console.log("MATCHES", matches);
+    // const randomMatch = matches[Math.floor(Math.random() * matches.length)];
+    // hi :)
+    res.json(matches);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Get all Users by userIds in the Database

@@ -40,14 +40,15 @@ const Dashboard = () => {
     }
   }, [user]);
 
-  const updateMatches = async (matchedUserId) => {
+  const updateMatches = async (match, matchedUserId = match.userId) => {
+    console.log("matchedUserId", matchedUserId);
     try {
       const updatedUser = await axios.put("http://localhost:8000/addmatch", {
         userId: user?.userId,
         matchedUserId,
       });
       //this is ok to refetch. ideally don't do it
-      //getUser();
+      setUser(user => ({...user, matches: [...user.matches, match]}))
     } catch (err) {
       console.log(err);
     }
@@ -79,7 +80,7 @@ const Dashboard = () => {
         ];
       setMatch(newMatch);
       console.log(newMatch);
-      updateMatches(newMatch.user_id);
+      updateMatches(newMatch);
     }
   }
   useEffect(() => {
