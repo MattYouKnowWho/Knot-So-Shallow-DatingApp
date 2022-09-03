@@ -1,10 +1,11 @@
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const express = require("express");
 const { MongoClient } = require("mongodb");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const path = require("path");
 require("dotenv").config();
 
 const uri = process.env.URI;
@@ -12,22 +13,24 @@ const uri = process.env.URI;
 const app = express();
 app.use(cors());
 app.use(express.json());
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+}
 
 // Default
-app.get("/", (req, res) => {
-  res.json("Hello to my app");
-});
+// app.get("/", (req, res) => {
+//   res.json("Hello to my app");
+// });
 
 // Sign up to the Database
 app.post("/signup", async (req, res) => {
   let client;
-  try {  
-  client = new MongoClient(uri);
-  const { email, password } = req.body;
+  try {
+    client = new MongoClient(uri);
+    const { email, password } = req.body;
 
-  const generatedUserId = uuidv4();
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+    const generatedUserId = uuidv4();
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await client.connect();
     const database = client.db("app-data");
@@ -59,7 +62,11 @@ app.post("/signup", async (req, res) => {
     res.status(201).json({ token, userId: generatedUserId });
   } catch (err) {
     console.log(err);
+<<<<<<< HEAD
     res.status(400).json({ message: 'Error'})
+=======
+    res.status(400).json({ message: "Erro" });
+>>>>>>> a4f12dd50a5c71edbe1e30a35e4e086946471f82
   } finally {
     await client.close();
   }
@@ -76,7 +83,7 @@ app.post("/login", async (req, res) => {
     const users = database.collection("users");
 
     const user = await users.findOne({ email });
-    if(!user) return res.status(401).send("User not found");
+    if (!user) return res.status(401).send("User not found");
     const correctPassword = await bcrypt.compare(
       password,
       user.hashed_password
@@ -111,9 +118,9 @@ app.get("/user", async (req, res) => {
     const query = { user_id: userId };
     const user = await users.findOne(query);
     return res.status(200).json(user);
-  } catch(err) {
+  } catch (err) {
     console.log(err);
-    res.status(400).json({ message: 'Error'})
+    res.status(400).json({ message: "Error" });
   } finally {
     await client.close();
   }
@@ -123,7 +130,7 @@ app.get("/user", async (req, res) => {
 app.put("/addmatch", async (req, res) => {
   const client = new MongoClient(uri);
   const { userId, matchedUserId } = req.body;
-//TODO --- matches and past maches, update both users?
+  //TODO --- matches and past maches, update both users?
   try {
     await client.connect();
     const database = client.db("app-data");
@@ -131,7 +138,7 @@ app.put("/addmatch", async (req, res) => {
 
     const query = { user_id: userId };
     const updateDocument = {
-      $push: { matches: { user_id: matchedUserId }},
+      $push: { matches: { user_id: matchedUserId } },
     };
     const user = await users.updateOne(query, updateDocument);
     res.send(user);
@@ -140,13 +147,13 @@ app.put("/addmatch", async (req, res) => {
   }
 });
 
-app.post("/getmatch", (req,res) => {
+app.post("/getmatch", (req, res) => {
   //start off true random, later factor into parameters
   console.log(req.body.gender, req.body.userId, "GENDER");
-//TODO use the mongoose model to find a match taht is the same gener they are looking for
-// hi :)
-  res.json("ok")
-})
+  //TODO use the mongoose model to find a match taht is the same gener they are looking for
+  // hi :)
+  res.json("ok");
+});
 
 // Get all Users by userIds in the Database
 app.get("/users", async (req, res) => {
@@ -176,10 +183,10 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.post("/getmatches", async(req,res)=> {
-    console.log("Match IDs --- ", req.body);
-    res.json("OK")
-})
+app.post("/getmatches", async (req, res) => {
+  console.log("Match IDs --- ", req.body);
+  res.json("OK");
+});
 // Get all the Gendered Users in the Database
 app.get("/gendered-users", async (req, res) => {
   const client = new MongoClient(uri);
@@ -286,6 +293,10 @@ app.delete("/delete-match", async (req, res) => {
   } finally {
     await client.close();
   }
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 app.listen(PORT, () => console.log("server running on PORT " + PORT));
