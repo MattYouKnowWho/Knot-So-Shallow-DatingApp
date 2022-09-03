@@ -253,7 +253,7 @@ nav .logo-container .logo {
 .onboarding {
     width: 100vw;
     height: 100vh;
-    position: fixed;
+    /* position: fixed; */
     background-position: center;
     background-size: cover;
     background-image: url('https://pin.it/2KiaVuC');
@@ -379,9 +379,9 @@ nav .logo-container .logo {
     display: none;
 }
 
-.onboarding form input[type=number] {
+/* .onboarding form input[type=number] {
     width: 10%;
-}
+} */
 
 .onboarding form input[type=radio]:checked + label {
     border: solid 2px rgb(58, 100, 137);
