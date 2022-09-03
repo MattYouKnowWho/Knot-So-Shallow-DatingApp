@@ -1,10 +1,14 @@
 import axios from "axios";
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { userAtom } from "../state";
 
-const MatchesDisplay = ({ matches = [], setClickedUser }) => {
-  const [matchedProfiles, setMatchedProfiles] = useState(matches);
+const MatchesDisplay = ({ setClickedUser }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null);
+  const user = useAtomValue(userAtom);
+  const { matches } = user;
+  const [matchedProfiles, setMatchedProfiles] = useState(matches||[]);
 
   const matchedUserIds = matches?.map(({ user_id }) => user_id);
   const userId = cookies.UserId;
@@ -17,7 +21,7 @@ const MatchesDisplay = ({ matches = [], setClickedUser }) => {
       setMatchedProfiles(response.data);
     } catch (error) {
       console.log(error);
-      setMatchedProfiles([])
+      setMatchedProfiles([]);
     }
   };
 
