@@ -53,10 +53,13 @@ app.post("/signup", async (req, res) => {
     const token = jwt.sign(insertedUser, sanitizedEmail, {
       expiresIn: 60 * 24,
     });
+    console.log('this is a token',token)
+    console.log('this is the data',data)
+
     res.status(201).json({ token, userId: generatedUserId });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ message: 'Erro'})
+    res.status(400).json({ message: 'Error'})
   } finally {
     await client.close();
   }
