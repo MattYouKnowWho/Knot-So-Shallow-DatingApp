@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import whiteLogo from "../images/KnotSoShallow.png";
-import colorLogo from "../images/KnotSoShallow.png";;
+import logo from "../images/KnotSoShallow.png";
+
 
 const Nav = ({ authToken, minimal, setShowModal, showModal, setIsSignUp }) => {
   const handleClick = () => {
@@ -15,7 +15,7 @@ const Nav = ({ authToken, minimal, setShowModal, showModal, setIsSignUp }) => {
       <div className="logo-container" onClick={() => navigate('/')}>
         <img
           className="logo"
-          src={minimal ? colorLogo : whiteLogo}
+          src={logo}
           alt="logo"
         />
       </div>
