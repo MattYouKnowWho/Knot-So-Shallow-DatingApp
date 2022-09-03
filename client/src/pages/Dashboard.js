@@ -3,10 +3,9 @@ import { useAtom } from "jotai";
 import ChatContainer from "../components/ChatContainer";
 import axios from "axios";
 import { userAtom } from "../state";
-import { getRandomUsers } from "../api";
 
 const Dashboard = () => {
-  const [genderedUsers, setGenderedUsers] = useState([]);
+  const [genderedUsers, setGenderedUsers] = useState(null);
   const [match, setMatch] = useState(null);
   const [user, setUser] = useAtom(userAtom);
   // const getUser = async () => {
@@ -22,26 +21,12 @@ const Dashboard = () => {
   // };
   const getGenderedUsers = async () => {
     try {
-      // const response = await axios.post("http://localhost:8000/getmatch", {
-      //   gender: user?.gender_interest,
-      //   userId: user?.userId,
-      // });
-      const response = await getRandomUsers(100);
-      console.log(response);
-
-      setGenderedUsers(
-        response.results.map((r) => {
-          const [dob_year, dob_month, dob_day] = r.dob.date.split(/\-|T/);
-          return {
-            about: `Hi, this is ${r.name.first}. I'm a ${r.dob.age} year old ${r.gender}, living in ${r.location.city}.`,
-            dob_day,
-            dob_month,
-            dob_year,
-            url: r.picture.large,
-          };
-        })
-      );
-      // console.log(response.data);
+      const response = await axios.post("http://localhost:8000/getmatch", {
+        gender: user?.gender_interest,
+        userId: user?.userId,
+      });
+      setGenderedUsers(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +35,7 @@ const Dashboard = () => {
   useEffect(() => {
     console.log("user", user);
     if (user) {
-      console.log(user);
+      console.log(user)
       getGenderedUsers();
     }
   }, [user]);
@@ -71,22 +56,20 @@ const Dashboard = () => {
   const matchedUserIds =
     user?.matches &&
     user?.matches.map(({ user_id }) => user_id).concat(user.userId);
-  //   console.log(matchedUserIds)
-  // console.log(genderedUsers)
-  // const filteredGenderedUsers = genderedUsers?.filter?.(
-  //   (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
-  // );
-  // console.log("FITERED", filteredGenderedUsers)
+
+  const filteredGenderedUsers = genderedUsers?.filter?.(
+    (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
+  );
   function logAll() {
     console.log(user);
     console.log(genderedUsers);
-    // console.log(filteredGenderedUsers);
+    console.log(filteredGenderedUsers);
     console.log(matchedUserIds);
     console.log(match);
   }
 
   function getRandomMatch() {
-    if (!genderedUsers.length) {
+    if (!filteredGenderedUsers?.[0]) {
       console.log("no gendered users");
       setMatch({
         about: "You're too Picky!",
@@ -96,9 +79,11 @@ const Dashboard = () => {
         url: "https://cdn.pixabay.com/photo/2022/08/01/10/36/tulips-7357877_1280.jpg",
       });
     } else {
-      console.log("here aree filtered", genderedUsers);
+      console.log("here aree filtered", filteredGenderedUsers);
       const newMatch =
-        genderedUsers[Math.floor(Math.random() * genderedUsers.length)];
+        filteredGenderedUsers[
+          Math.floor(Math.random() * filteredGenderedUsers.length)
+        ];
       setMatch(newMatch);
       console.log(newMatch);
       updateMatches(newMatch.user_id);
@@ -107,7 +92,7 @@ const Dashboard = () => {
   useEffect(() => {
     console.log("match", match);
   }, [match]);
-  console.log("filteredGenderedUsers ", genderedUsers);
+  console.log("filteredGenderedUsers ", filteredGenderedUsers);
   return (
     <>
       {user ? (
@@ -128,9 +113,10 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-       <div class="loader"></div>
+        <p>Could not find user from databse</p>
       )}
     </>
   );
 };
 export default Dashboard;
+

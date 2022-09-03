@@ -62,11 +62,7 @@ app.post("/signup", async (req, res) => {
     res.status(201).json({ token, userId: generatedUserId });
   } catch (err) {
     console.log(err);
-<<<<<<< HEAD
     res.status(400).json({ message: 'Error'})
-=======
-    res.status(400).json({ message: "Erro" });
->>>>>>> a4f12dd50a5c71edbe1e30a35e4e086946471f82
   } finally {
     await client.close();
   }
