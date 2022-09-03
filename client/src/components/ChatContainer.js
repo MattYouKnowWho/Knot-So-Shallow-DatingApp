@@ -36,7 +36,7 @@ const ChatContainer = ({ user, match, setMatch }) => {
             {!clickedUser && <MatchesDisplay matches={user.matches} setClickedUser={setClickedUser}/>}
 
             {clickedUser && <ChatDisplay user={user} clickedUser={clickedUser}/>}
-            {match && <button onClick={deleteMatch}>
+            {match && <button onClick={deleteMatch} className="button-20">
                 unmatch
             </button>}
             

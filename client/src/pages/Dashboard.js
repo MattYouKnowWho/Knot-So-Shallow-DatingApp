@@ -60,13 +60,6 @@ const Dashboard = () => {
   const filteredGenderedUsers = genderedUsers?.filter?.(
     (genderedUser) => !matchedUserIds.includes(genderedUser.user_id)
   );
-  function logAll() {
-    console.log(user);
-    console.log(genderedUsers);
-    console.log(filteredGenderedUsers);
-    console.log(matchedUserIds);
-    console.log(match);
-  }
 
   function getRandomMatch() {
     if (!filteredGenderedUsers?.[0]) {
@@ -107,8 +100,7 @@ const Dashboard = () => {
                   <h1>{match.about}</h1>
                 </div>
               )}
-              {!match && <button onClick={getRandomMatch}>Random match</button>}
-              <button onClick={logAll}>console log all stuff</button>
+              {!match && <button onClick={getRandomMatch} className="button-19">Random match</button>}
             </div>
           </div>
         </div>
